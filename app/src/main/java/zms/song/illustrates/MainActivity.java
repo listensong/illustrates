@@ -1,13 +1,32 @@
 package zms.song.illustrates;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+import zms.song.illustrates.base.ContainerActivity;
+import zms.song.illustrates.hello.HelloActivity;
+import zms.song.illustrates.permission.PermissionActivity;
+
+public class MainActivity extends ContainerActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initBtnData();
     }
+
+    private void initBtnData() {
+        pushActivity(R.id.hello_text_view, HelloActivity.class);
+        pushActivity(R.id.permission_text_view, PermissionActivity.class);
+
+        initBasicVIew(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        onClicked(view);
+    }
+
 }

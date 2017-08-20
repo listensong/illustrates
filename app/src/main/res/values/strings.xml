@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Illustrates</string>
+
+    <!-- -->
+    <string name="type_hello">HelloWorld</string>
+    <string name="type_permission">Permission</string>
+
 </resources>

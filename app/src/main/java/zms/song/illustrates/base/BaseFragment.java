@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 import android.view.View;
 
@@ -17,6 +18,7 @@ public abstract class BaseFragment extends Fragment {
     protected Context mContext;
     protected Handler mHandler = new Handler(Looper.getMainLooper());
 
+    @CallSuper
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
