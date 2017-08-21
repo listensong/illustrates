@@ -3,6 +3,7 @@
     package="zms.song.illustrates">
 
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -28,7 +29,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".permission.PermissionActivity" />
-        <activity android:name=".hello.HelloActivity"></activity>
+        <activity android:name=".hello.HelloActivity" />
+        <activity android:name=".widget.recyclerview.RecyclerViewActivity"></activity>
     </application>
 
 </manifest>
