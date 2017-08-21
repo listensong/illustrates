@@ -84,7 +84,7 @@ public abstract class PermissionBaseFragment extends Fragment {
         }
     }
 
-    protected boolean checkPermission(String perm) {
+    protected boolean checkPermission(@NonNull String perm) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return ContextCompat.checkSelfPermission(mContext, perm) == PackageManager.PERMISSION_GRANTED;
         }
@@ -108,7 +108,7 @@ public abstract class PermissionBaseFragment extends Fragment {
         }
     }
 
-    protected void requestPermissions(IPermissionCallback permissionCallback) {
+    protected void requestPermissions(@NonNull IPermissionCallback permissionCallback) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String[] perms = new String[mPermsNeedful.size()];
             mPermsNeedful.toArray(perms);
@@ -119,7 +119,7 @@ public abstract class PermissionBaseFragment extends Fragment {
         }
     }
 
-    protected void requestPermission(String perm, IPermissionCallback permissionCallback) {
+    protected void requestPermission(String perm, @NonNull IPermissionCallback permissionCallback) {
         if (perm == null) {
             return;
         }
@@ -129,7 +129,7 @@ public abstract class PermissionBaseFragment extends Fragment {
         }
     }
 
-    protected void requestPermissions(IPermissionCallback permissionCallback, String... perms) {
+    protected void requestPermissions(@NonNull IPermissionCallback permissionCallback, String... perms) {
         if (perms == null) {
             return;
         }
@@ -142,7 +142,7 @@ public abstract class PermissionBaseFragment extends Fragment {
         }
     }
 
-    protected void requestPermissions(IPermissionsCallback permissionsCallback, String... perms) {
+    protected void requestPermissions(@NonNull IPermissionsCallback permissionsCallback, String... perms) {
         if (perms == null) {
             return;
         }
