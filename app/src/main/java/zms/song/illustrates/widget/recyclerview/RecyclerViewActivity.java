@@ -22,7 +22,7 @@ public class RecyclerViewActivity extends BaseActivity {
         setContentView(R.layout.activity_recycler_view);
 
         initView();
-        initList();
+        initItemList();
         initRecyclerAdapter();
         initSwipeRefresh();
     }
@@ -32,27 +32,24 @@ public class RecyclerViewActivity extends BaseActivity {
         mSampleRecyclerView = (RecyclerView) findViewById(R.id.sample_recycler_view);
     }
 
-    private List<String> mList = new ArrayList<>();
-    private void initList() {
-        if (mList == null) {
-            mList = new ArrayList<>();
+    private List<ItemData> mItemList = new ArrayList<>();
+    private void initItemList() {
+        if (mItemList == null) {
+            mItemList = new ArrayList<>();
         }
         for (int i = 0; i < 20; i++) {
-            mList.add(i, "HelloWorld " + i);
+            mItemList.add(i, new ItemData("name", "title", "c:" + i, R.mipmap.ic_launcher, false));
         }
     }
 
     private void addItem() {
-        for (int i = 0; i < 5; i++) {
-            mMixedAdapter.addItem("HelloWorld new ");
-        }
     }
 
     private MixedAdapter mMixedAdapter;
     private LinearLayoutManager mLayoutManager;
     private int mLastVisiblePos;
     private void initRecyclerAdapter() {
-        mMixedAdapter = new MixedAdapter(this, mList);
+        mMixedAdapter = new MixedAdapter(this, mItemList);
         mSampleRecyclerView.setAdapter(mMixedAdapter);
         mLayoutManager = new LinearLayoutManager(this);
         mSampleRecyclerView.setLayoutManager(mLayoutManager);
@@ -73,7 +70,6 @@ public class RecyclerViewActivity extends BaseActivity {
             }
         });
 
-
         mLastVisiblePos = mLayoutManager.findLastVisibleItemPosition();
         //滚动监听
         mSampleRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -91,8 +87,6 @@ public class RecyclerViewActivity extends BaseActivity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-//                int[] pos = mLayoutManager.findLastVisibleItemPositions();
-//                mLastVisiblePos = Math.max(pos[0],pos[1]);
                 mLastVisiblePos = mLayoutManager.findLastVisibleItemPosition();
             }
         });

@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,12 +30,13 @@ public class MixedAdapter extends RecyclerView.Adapter<MixedAdapter.ViewHolder> 
     }
 
     private Context mContext;
-    private List<String> mList;
+    private List<ItemData> mList;
+    private int mSelectState = View.GONE;
 
     private IOnItemClickListener mItemClickListener;
     private IOnItemLongClickListener mItemLongListener;
 
-    public MixedAdapter(@NonNull Context context, @NonNull List<String> list) {
+    public MixedAdapter(@NonNull Context context, @NonNull List<ItemData> list) {
         mContext = context.getApplicationContext();
         mList = list;
     }
@@ -55,14 +58,11 @@ public class MixedAdapter extends RecyclerView.Adapter<MixedAdapter.ViewHolder> 
     }
 
     public void addItem(String string) {
-        int pos = mList.size();
-        mList.add(pos, string + pos);
-        notifyItemInserted(pos);
+
     }
 
     public void insertItem(int pos, String string) {
-        mList.add(pos, string);
-        notifyItemInserted(pos);
+
     }
 
     public void removeItem(int pos) {
@@ -70,39 +70,72 @@ public class MixedAdapter extends RecyclerView.Adapter<MixedAdapter.ViewHolder> 
         notifyItemRemoved(pos);
     }
 
+    private void itemClick(View view, int position) {
+        if (mSelectState == View.VISIBLE) {
+            mList.get(position).invertCheckedState();
+            notifyItemChanged(position);
+        } else {
+            if (mItemClickListener != null) {
+                mItemClickListener.onItemClicked(view);
+            }
+        }
+    }
+
+    private boolean itemLongClick(View view, int position) {
+        if (mItemLongListener != null) {
+            mItemLongListener.onItemLongClicked(view);
+            if (mSelectState == View.GONE) {
+                mSelectState = View.VISIBLE;
+            } else {
+                mSelectState = View.GONE;
+            }
+            notifyDataSetChanged();
+        }
+        return true;
+    }
+
+    private void checkedStateChanged(int position, boolean checked) {
+        mList.get(position).setChecked(checked);
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listitem_mixed, parent, false);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mItemClickListener != null) {
-                    mItemClickListener.onItemClicked(v);
-                }
-            }
-        });
-        view.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (mItemClickListener != null) {
-                    mItemLongListener.onItemLongClicked(v);
-                    return true;
-                }
-                return false;
-            }
-        });
-
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         if (position >= 0 && position < mList.size()) {
             holder.mIndexTextView.setText(String.valueOf(position));
-            holder.mTitleTextView.setText(mList.get(position));
+            holder.mTitleTextView.setText(mList.get(position).getTitle());
+            holder.mIcon.setImageResource(mList.get(position).getDrawableRes());
+
+            holder.mCheckBox.setVisibility(mSelectState);
+            holder.mCheckBox.setOnCheckedChangeListener(null);
+            holder.mCheckBox.setChecked(mList.get(position).getCheckd());
+            holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    checkedStateChanged(position, isChecked);
+                }
+            });
+
             holder.mPosition = position;
+
             holder.mItemView.setTag(position);
-            //holder.mIcon.setImageResource(R.drawable.ic_launcher);
+            holder.mItemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    itemClick(v, position);
+                }
+            });
+            holder.mItemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return itemLongClick(v, position);
+                }
+            });
         }
     }
 
@@ -116,6 +149,7 @@ public class MixedAdapter extends RecyclerView.Adapter<MixedAdapter.ViewHolder> 
         ImageView mIcon;
         TextView mIndexTextView;
         TextView mTitleTextView;
+        CheckBox mCheckBox;
         int mPosition;
 
         public ViewHolder(View itemView) {
@@ -123,6 +157,7 @@ public class MixedAdapter extends RecyclerView.Adapter<MixedAdapter.ViewHolder> 
             mIcon = (ImageView) itemView.findViewById(R.id.icon_image_view);
             mIndexTextView = (TextView) itemView.findViewById(R.id.index_text_view);
             mTitleTextView = (TextView) itemView.findViewById(R.id.title_text_view);
+            mCheckBox = (CheckBox) itemView.findViewById(R.id.selected_check_box);
             mItemView = itemView;
         }
     }

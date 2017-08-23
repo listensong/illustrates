@@ -4,5 +4,6 @@
     <!-- -->
     <string name="type_hello">HelloWorld</string>
     <string name="type_permission">Permission</string>
+    <string name="type_recycler_view">RecyclerView</string>
 
 </resources>

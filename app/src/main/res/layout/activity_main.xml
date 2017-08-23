@@ -16,7 +16,6 @@
         android:text="@string/type_hello"
         android:background="?android:selectableItemBackground"/>
 
-
     <TextView
         android:id="@+id/permission_text_view"
         android:layout_width="match_parent"
@@ -24,6 +23,15 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:text="@string/type_permission"
+        android:background="?android:selectableItemBackground"/>
+
+    <TextView
+        android:id="@+id/recycler_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/type_recycler_view"
         android:background="?android:selectableItemBackground"/>
 
 </LinearLayout>
