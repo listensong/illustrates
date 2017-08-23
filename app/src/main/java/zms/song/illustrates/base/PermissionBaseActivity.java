@@ -48,13 +48,13 @@ public abstract class PermissionBaseActivity extends AppCompatActivity {
     public interface IPermissionCallback {
         void onPermissionResult(@NonNull String perm, int result);
     }
-    protected final HashMap<String, IPermissionCallback> mPermHandler = new HashMap<>();
+    protected final HashMap<String, IPermissionCallback> mPermmissonMapHandler = new HashMap<>();
     protected IPermissionCallback addPermissionHolder(@NonNull String key, IPermissionCallback permissionCallback) {
-        mPermHandler.put(key, permissionCallback);
+        mPermmissonMapHandler.put(key, permissionCallback);
         return permissionCallback;
     }
     protected IPermissionCallback removePermissionHolder(@NonNull String key) {
-        return mPermHandler.remove(key);
+        return mPermmissonMapHandler.remove(key);
     }
 
     @CallSuper
@@ -123,7 +123,10 @@ public abstract class PermissionBaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void requestPermissions(@NonNull IPermissionCallback permissionCallback) {
+    protected void requestPermissions(IPermissionCallback permissionCallback) {
+        if (permissionCallback == null) {
+            return;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String[] perms = new String[mPermsNeedful.size()];
             mPermsNeedful.toArray(perms);
@@ -131,21 +134,38 @@ public abstract class PermissionBaseActivity extends AppCompatActivity {
                 addPermissionHolder(perm, permissionCallback);
             }
             ActivityCompat.requestPermissions(this, perms, PERMISSION_REQUEST_CODE);
+        } else {
+            String[] perms = new String[mPermsNeedful.size()];
+            mPermsNeedful.toArray(perms);
+            for (String perm: perms) {
+                permissionCallback.onPermissionResult(perm, PackageManager.PERMISSION_GRANTED);
+            }
         }
     }
 
-    protected void requestPermission(String perm, @NonNull IPermissionCallback permissionCallback) {
+    protected void requestPermission(String perm, IPermissionCallback permissionCallback) {
         if (perm == null) {
             return;
         }
+
+        if (permissionCallback == null) {
+            return;
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             addPermissionHolder(perm, permissionCallback);
             ActivityCompat.requestPermissions(this, new String[]{perm}, PERMISSION_REQUEST_CODE);
+        } else {
+            permissionCallback.onPermissionResult(perm, PackageManager.PERMISSION_GRANTED);
         }
     }
 
-    protected void requestPermissions(@NonNull IPermissionCallback permissionCallback, String... perms) {
+    protected void requestPermissions(IPermissionCallback permissionCallback, String... perms) {
         if (perms == null) {
+            return;
+        }
+
+        if (permissionCallback == null) {
             return;
         }
 
@@ -154,17 +174,72 @@ public abstract class PermissionBaseActivity extends AppCompatActivity {
                 addPermissionHolder(perm, permissionCallback);
             }
             ActivityCompat.requestPermissions(this, perms, PERMISSION_REQUEST_CODE);
+        } else {
+            for (String perm: perms) {
+                permissionCallback.onPermissionResult(perm, PackageManager.PERMISSION_GRANTED);
+            }
         }
     }
 
-    protected void requestPermissions(@NonNull IPermissionsCallback permissionsCallback, String... perms) {
+    protected void requestPermissions(IPermissionsCallback permissionsCallback, String... perms) {
         if (perms == null) {
+            return;
+        }
+
+        if (permissionsCallback == null) {
             return;
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mPermissionsCallback = permissionsCallback;
             ActivityCompat.requestPermissions(this, perms, PERMISSION_REQUEST_CODE);
+        } else {
+            int[] grantResults = new int[perms.length];
+            for (int i = 0; i < grantResults.length; i ++) {
+                grantResults[i] = PackageManager.PERMISSION_GRANTED;
+            }
+            permissionsCallback.onPermissionsResult(perms, grantResults);
+        }
+    }
+
+
+    private IPermissionCallback mPermissionHandle;
+    protected void permissionRequestHandle(IPermissionCallback permissionCallback, String perm) {
+        if (perm == null) {
+            return;
+        }
+
+        if (permissionCallback == null) {
+            return;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mPermissionHandle = permissionCallback;
+            ActivityCompat.requestPermissions(this, new String[]{perm}, PERMISSION_REQUEST_CODE);
+        } else {
+            permissionCallback.onPermissionResult(perm, PackageManager.PERMISSION_GRANTED);
+        }
+    }
+
+    private IPermissionsCallback mPermissionsHandle;
+    protected void permissionsRequestHandle(IPermissionsCallback permissionsCallback, String... perms) {
+        if (perms == null) {
+            return;
+        }
+
+        if (permissionsCallback == null) {
+            return;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mPermissionsHandle = permissionsCallback;
+            ActivityCompat.requestPermissions(this, perms, PERMISSION_REQUEST_CODE);
+        } else {
+            int[] grantResults = new int[perms.length];
+            for (int i = 0; i < grantResults.length; i ++) {
+                grantResults[i] = PackageManager.PERMISSION_GRANTED;
+            }
+            permissionsCallback.onPermissionsResult(perms, grantResults);
         }
     }
 
@@ -172,19 +247,36 @@ public abstract class PermissionBaseActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
             updatePermInfo();
-            if (mPermissionsCallback != null) {
-                mPermissionsCallback.onPermissionsResult(permissions, grantResults);
-                mPermissionsCallback = null;
-            } else {
-                for (int i = 0; i < permissions.length; i++) {
-                    IPermissionCallback callback = removePermissionHolder(permissions[i]);
-                    if (callback != null) {
-                        callback.onPermissionResult(permissions[i], grantResults[i]);
-                    }
-                }
-            }
+            permissionResultHandler(permissions, grantResults);
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+
+    private void permissionResultHandler(@NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (mPermissionHandle != null) {
+            mPermissionHandle.onPermissionResult(permissions[0], grantResults[0]);
+            mPermissionHandle = null;
+        }
+
+        if (mPermissionsHandle != null) {
+            mPermissionsHandle.onPermissionsResult(permissions, grantResults);
+            mPermissionsHandle = null;
+        }
+
+        if (mPermissionsCallback != null) {
+            mPermissionsCallback.onPermissionsResult(permissions, grantResults);
+            mPermissionsCallback = null;
+        }
+
+        if (mPermmissonMapHandler.size() > 0){
+            for (int i = 0; i < permissions.length; i++) {
+                IPermissionCallback callback = removePermissionHolder(permissions[i]);
+                if (callback != null) {
+                    callback.onPermissionResult(permissions[i], grantResults[i]);
+                }
+            }
         }
     }
 
