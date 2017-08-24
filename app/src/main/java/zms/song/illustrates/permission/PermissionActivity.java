@@ -7,8 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.Arrays;
-
 import zms.song.illustrates.R;
 import zms.song.illustrates.base.PermissionBaseActivity;
 
@@ -72,12 +70,7 @@ public class PermissionActivity extends PermissionBaseActivity implements View.O
                 }, Manifest.permission.RECORD_AUDIO, Manifest.permission.READ_CONTACTS, Manifest.permission.CAMERA );
                 break;
             case R.id.permission3_text_view:
-                requestPermissions(new IPermissionsCallback() {
-                    @Override
-                    public void onPermissionsResult(@NonNull String[] perms, @NonNull int[] result) {
-                        Log.e(TAG, "onPermissionResult3 " + Arrays.toString(perms));
-                    }
-                }, Manifest.permission.RECORD_AUDIO, Manifest.permission.READ_CONTACTS, Manifest.permission.CAMERA );
+                //TODO
                 break;
         }
     }
