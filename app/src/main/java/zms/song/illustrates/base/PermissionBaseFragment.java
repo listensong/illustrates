@@ -185,7 +185,7 @@ public abstract class PermissionBaseFragment extends Fragment {
         return resultPerms;
     }
 
-    private void requestPermissionFlow(@NonNull String[] perms, @NonNull IPermissionCallback permissionCallback) {
+    private void requestPermissionManage(@NonNull String[] perms, @NonNull IPermissionCallback permissionCallback) {
         int key = getTransactionId();
         if (key != -1 && (key & 0xffff0000) != 0) {
             key = 1;
@@ -193,13 +193,13 @@ public abstract class PermissionBaseFragment extends Fragment {
         }
 
         if (perms.length == 1) {
-            requestActivityCompatPermission(key, perms[0], permissionCallback);
+            requestSingleCompatPermission(key, perms[0], permissionCallback);
         } else {
-            requestActivityCompatPermissions(key, perms, permissionCallback);
+            requestMultiCompatPermissions(key, perms, permissionCallback);
         }
     }
 
-    private void requestActivityCompatPermissions(@IntRange(from = 0) int key, @NonNull String[] perms, @NonNull IPermissionCallback permissionCallback) {
+    private void requestMultiCompatPermissions(@IntRange(from = 0) int key, @NonNull String[] perms, @NonNull IPermissionCallback permissionCallback) {
         ArrayList<String> granted = new ArrayList<>();
         ArrayList<String> needRequest = updatePermissions(perms, granted);
         if (granted.size() > 0) {
@@ -223,7 +223,7 @@ public abstract class PermissionBaseFragment extends Fragment {
         }
     }
 
-    private void requestActivityCompatPermission(@IntRange(from = 0) int key, @NonNull String perm, @NonNull IPermissionCallback permissionCallback) {
+    private void requestSingleCompatPermission(@IntRange(from = 0) int key, @NonNull String perm, @NonNull IPermissionCallback permissionCallback) {
         if (ContextCompat.checkSelfPermission(mContext, perm) == PackageManager.PERMISSION_GRANTED) {
             permissionCallback.onPermissionResult(perm, PackageManager.PERMISSION_GRANTED);
         } else {
@@ -252,7 +252,7 @@ public abstract class PermissionBaseFragment extends Fragment {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissionFlow(perms, permissionCallback);
+            requestPermissionManage(perms, permissionCallback);
         } else {
             for (String perm: perms) {
                 permissionCallback.onPermissionResult(perm, PackageManager.PERMISSION_GRANTED);
@@ -268,7 +268,7 @@ public abstract class PermissionBaseFragment extends Fragment {
         String[] perms = new String[mPermsNeedful.size()];
         mPermsNeedful.toArray(perms);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissionFlow(perms, permissionCallback);
+            requestPermissionManage(perms, permissionCallback);
         } else {
             for (String perm: perms) {
                 permissionCallback.onPermissionResult(perm, PackageManager.PERMISSION_GRANTED);
