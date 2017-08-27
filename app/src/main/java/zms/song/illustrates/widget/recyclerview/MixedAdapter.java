@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import zms.song.illustrates.Anim.AnimUtil;
 import zms.song.illustrates.R;
 
 /**
@@ -65,6 +66,27 @@ public class MixedAdapter extends RecyclerView.Adapter<MixedAdapter.ViewHolder> 
 
     }
 
+    public boolean setCheckBoxColumn(boolean show) {
+        if (show) {
+            if (mSelectState == View.GONE) {
+                mSelectState = View.VISIBLE;
+                notifyDataSetChanged();
+                return true;
+            }
+        } else {
+            if (mSelectState == View.VISIBLE) {
+                mSelectState = View.GONE;
+                notifyDataSetChanged();
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkBoxColumnVisible() {
+        return mSelectState == View.VISIBLE;
+    }
+
     public void removeItem(int pos) {
         mList.remove(pos);
         notifyItemRemoved(pos);
@@ -72,14 +94,15 @@ public class MixedAdapter extends RecyclerView.Adapter<MixedAdapter.ViewHolder> 
 
     private void itemClick(View view, int position) {
         if (mSelectState == View.VISIBLE) {
-            mList.get(position).invertCheckedState();
-            notifyItemChanged(position);
+            //mList.get(position).invertCheckedState();
+            //notifyItemChanged(position);
         } else {
             if (mItemClickListener != null) {
                 mItemClickListener.onItemClicked(view);
             }
         }
     }
+
 
     private boolean itemLongClick(View view, int position) {
         if (mItemLongListener != null) {
@@ -104,16 +127,29 @@ public class MixedAdapter extends RecyclerView.Adapter<MixedAdapter.ViewHolder> 
         return new ViewHolder(view);
     }
 
+    //private boolean mCanBeShow = true;
+
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (position >= 0 && position < mList.size()) {
             holder.mIndexTextView.setText(String.valueOf(position));
             holder.mTitleTextView.setText(mList.get(position).getTitle());
             holder.mIcon.setImageResource(mList.get(position).getDrawableRes());
 
-            holder.mCheckBox.setVisibility(mSelectState);
+            if (mSelectState == View.VISIBLE) {
+                if (!mList.get(position).getShow()) {//if (mCanBeShow) {
+                    mList.get(position).setShow(true);
+                    AnimUtil.applyObjectAnimSetSync(holder.mContentLayout, R.animator.item_translate_in, holder.mCheckBox, R.animator.item_fade_in, null);
+                }
+            } else {
+                if (mList.get(position).getShow()) {
+                    mList.get(position).setShow(false);
+                    AnimUtil.applyObjectAnimSetSync(holder.mContentLayout, R.animator.item_translate_out, holder.mCheckBox, R.animator.item_fade_out, null);
+                }
+            }
+
             holder.mCheckBox.setOnCheckedChangeListener(null);
-            holder.mCheckBox.setChecked(mList.get(position).getCheckd());
+            holder.mCheckBox.setChecked(mList.get(position).getChecked());
             holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -127,6 +163,9 @@ public class MixedAdapter extends RecyclerView.Adapter<MixedAdapter.ViewHolder> 
             holder.mItemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (mSelectState == View.VISIBLE) {
+                        holder.mCheckBox.setChecked(mList.get(position).invertCheckedState());
+                    }
                     itemClick(v, position);
                 }
             });
@@ -146,6 +185,7 @@ public class MixedAdapter extends RecyclerView.Adapter<MixedAdapter.ViewHolder> 
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         View mItemView;
+        View mContentLayout;
         ImageView mIcon;
         TextView mIndexTextView;
         TextView mTitleTextView;
@@ -154,10 +194,11 @@ public class MixedAdapter extends RecyclerView.Adapter<MixedAdapter.ViewHolder> 
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mIcon = (ImageView) itemView.findViewById(R.id.icon_image_view);
-            mIndexTextView = (TextView) itemView.findViewById(R.id.index_text_view);
-            mTitleTextView = (TextView) itemView.findViewById(R.id.title_text_view);
-            mCheckBox = (CheckBox) itemView.findViewById(R.id.selected_check_box);
+            mIcon = itemView.findViewById(R.id.icon_image_view);
+            mIndexTextView = itemView.findViewById(R.id.index_text_view);
+            mTitleTextView = itemView.findViewById(R.id.title_text_view);
+            mCheckBox = itemView.findViewById(R.id.selected_check_box);
+            mContentLayout = itemView.findViewById(R.id.content_layout);
             mItemView = itemView;
         }
     }

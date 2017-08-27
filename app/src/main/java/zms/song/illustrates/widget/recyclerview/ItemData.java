@@ -14,6 +14,7 @@ public class ItemData {
     @DrawableRes
     private int mResId;
     private boolean mChecked;
+    private boolean mShow;
 
     public ItemData(@NonNull String name, @NonNull String title, String content, @DrawableRes int res, boolean checked) {
         this.mName = name;
@@ -21,6 +22,7 @@ public class ItemData {
         this.mContent = content;
         this.mResId = res;
         this.mChecked = checked;
+        this.mShow = false;
     }
 
     public String getName() {
@@ -40,7 +42,7 @@ public class ItemData {
         return mResId;
     }
 
-    public boolean getCheckd() {
+    public boolean getChecked() {
         return mChecked;
     }
 
@@ -48,7 +50,16 @@ public class ItemData {
         mChecked = checked;
     }
 
-    public void invertCheckedState() {
+    public boolean getShow() {
+        return mShow;
+    }
+
+    public void setShow(boolean show) {
+        mShow = show;
+    }
+
+    public boolean invertCheckedState() {
         mChecked = !mChecked;
+        return mChecked;
     }
 }

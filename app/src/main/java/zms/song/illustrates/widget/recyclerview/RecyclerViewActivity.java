@@ -118,4 +118,18 @@ public class RecyclerViewActivity extends BaseActivity {
         mSwipeRefreshLayout.setColorSchemeResources(R.color.swipe_color1, R.color.swipe_color2);
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
     }
+
+    @Override
+    public void onBackPressed() {
+
+        if (mMixedAdapter != null) {
+            if (mMixedAdapter.checkBoxColumnVisible()) {
+                mMixedAdapter.setCheckBoxColumn(false);
+            } else {
+                super.onBackPressed();
+            }
+        } else {
+            super.onBackPressed();
+        }
+    }
 }
