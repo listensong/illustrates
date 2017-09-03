@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="zms.song.illustrates.hardware.HardWareActivity">
+
+    <TextView
+        android:id="@+id/camera1_text_view"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/type_hw_camera1"
+        android:background="?android:selectableItemBackground"/>
+
+    <TextView
+        android:id="@+id/camera2_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/type_hw_camera2"
+        android:background="?android:selectableItemBackground"/>
+
+</LinearLayout>

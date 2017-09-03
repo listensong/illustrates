@@ -28,7 +28,7 @@ public abstract class ContainerActivity extends BaseActivity {
 
     }
 
-    protected void initBasicVIew(View.OnClickListener listener) {
+    protected void initBasicView(View.OnClickListener listener) {
         for (int i = 0; i < mActivitySets.size(); i++) {
             View view = findViewById(mActivitySets.keyAt(i));
             mActivitySets.valueAt(i).setView(view);
