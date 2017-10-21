@@ -32,7 +32,8 @@
         <activity android:name=".hello.HelloActivity" />
         <activity android:name=".widget.recyclerview.RecyclerViewActivity" />
         <activity android:name=".hardware.HardWareActivity" />
-        <activity android:name=".hardware.camera1.Camera1Activity"></activity>
+        <activity android:name=".hardware.camera1.Camera1Activity" />
+        <activity android:name=".widget.WidgetActivity"></activity>
     </application>
 
 </manifest>
