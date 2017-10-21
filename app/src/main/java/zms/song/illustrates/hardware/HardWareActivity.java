@@ -6,6 +6,7 @@ import android.view.View;
 import zms.song.illustrates.R;
 import zms.song.illustrates.base.ContainerActivity;
 import zms.song.illustrates.hardware.camera1.Camera1Activity;
+import zms.song.illustrates.hardware.wifi.WlanDirectActivity;
 
 public class HardWareActivity extends ContainerActivity implements View.OnClickListener {
 
@@ -19,6 +20,7 @@ public class HardWareActivity extends ContainerActivity implements View.OnClickL
     private void initBtnData() {
         pushActivity(R.id.camera1_text_view, Camera1Activity.class);
         //pushActivity(R.id.camera2_text_view, Camera2Activity.class);
+        pushActivity(R.id.wlan_text_view, WlanDirectActivity.class);
 
         initBasicView(this);
     }
