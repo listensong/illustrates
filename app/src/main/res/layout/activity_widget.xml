@@ -7,9 +7,21 @@
     tools:context="zms.song.illustrates.widget.WidgetActivity">
 
     <TextView
-        android:id="@+id/toastTextView"
+        android:id="@+id/toast_text_view"
         android:layout_width="100dp"
         android:layout_height="40dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:background="@color/colorAccent"/>
+
+    <zms.song.illustrates.widget.EditText.LimitEditText
+        android:id="@+id/limit_edit_text"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:maxLength="15"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toast_text_view"/>
 
 </android.support.constraint.ConstraintLayout>
