@@ -10,6 +10,9 @@
     <string name="type_hw_camera2">Camera2</string>
     <string name="type_widget">Widget</string>
 
+
+    <string name="unsupported_camera_device">该设备不支持照相机功能</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

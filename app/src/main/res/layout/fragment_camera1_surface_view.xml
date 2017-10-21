@@ -1,8 +1,72 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" >
 
-    tools:context="zms.song.illustrates.hardware.camera1.Camera1SurfaceViewFragment">
+    <data>
+        <variable
+            name="cameraPresenter"
+            type="zms.song.illustrates.hardware.camera1.Camera1SurfaceViewFragment"/>
+        <import type="android.view.View"/>
+    </data>
 
-</FrameLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main_container">
+
+        <FrameLayout
+            android:id="@+id/preview_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="@id/main_container"
+            app:layout_constraintEnd_toEndOf="@id/main_container"
+            app:layout_constraintBottom_toBottomOf="@id/main_container"
+            app:layout_constraintTop_toTopOf="@id/main_container"/>
+
+        <RelativeLayout
+            android:id="@+id/action_layout"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            app:layout_constraintVertical_bias="0.95"
+            app:layout_constraintStart_toStartOf="@id/main_container"
+            app:layout_constraintEnd_toEndOf="@id/main_container"
+            app:layout_constraintTop_toTopOf="@id/main_container"
+            app:layout_constraintBottom_toBottomOf="@id/main_container">
+
+            <TextView
+                android:id="@+id/switch_text_view"
+                android:layout_centerVertical="true"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:layout_alignParentStart="true"
+                android:onClick="@{(v) -> cameraPresenter.onSwitchBtnAction(v)}"
+                android:background="@drawable/text_view_circle"/>
+
+            <TextView
+                android:id="@+id/shutter_text_view"
+                android:layout_centerInParent="true"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/shutter_btn_selector"
+                android:alpha="0.8"
+                android:onClick="@{(v) -> cameraPresenter.onShutterBtnAction(v)}"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/more_text_view"
+                android:layout_centerVertical="true"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:onClick="@{(v) -> cameraPresenter.onMoreBtnAction(v)}"
+                android:background="@drawable/text_view_circle"/>
+
+        </RelativeLayout>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>
