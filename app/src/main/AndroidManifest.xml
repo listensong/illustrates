@@ -12,9 +12,10 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".base.IllustratesApplication"
@@ -37,7 +38,8 @@
         <activity android:name=".hardware.HardWareActivity" />
         <activity android:name=".hardware.camera1.Camera1Activity" />
         <activity android:name=".widget.WidgetActivity" />
-        <activity android:name=".hardware.wifi.WlanDirectActivity"/>
+        <activity android:name=".hardware.wifi.WlanDirectActivity" />
+        <activity android:name=".async.RxJavaActivity"></activity>
     </application>
 
 </manifest>
