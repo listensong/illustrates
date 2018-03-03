@@ -3,10 +3,12 @@ package zms.song.illustrates;
 import android.os.Bundle;
 import android.view.View;
 
+import zms.song.illustrates.async.RxJavaActivity;
 import zms.song.illustrates.base.ContainerActivity;
 import zms.song.illustrates.hardware.HardWareActivity;
 import zms.song.illustrates.hello.HelloActivity;
 import zms.song.illustrates.permission.PermissionActivity;
+import zms.song.illustrates.widget.WidgetActivity;
 import zms.song.illustrates.widget.recyclerview.RecyclerViewActivity;
 
 public class MainActivity extends ContainerActivity implements View.OnClickListener {
@@ -24,6 +26,8 @@ public class MainActivity extends ContainerActivity implements View.OnClickListe
         pushActivity(R.id.permission_text_view, PermissionActivity.class);
         pushActivity(R.id.recycler_text_view, RecyclerViewActivity.class);
         pushActivity(R.id.hw_text_view, HardWareActivity.class);
+        pushActivity(R.id.widget_text_view, WidgetActivity.class);
+        pushActivity(R.id.rx_java_text_view, RxJavaActivity.class);
 
         initBasicView(this);
     }

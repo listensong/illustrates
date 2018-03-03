@@ -43,4 +43,22 @@
         android:text="@string/type_hard_ware"
         android:background="?android:selectableItemBackground"/>
 
+    <TextView
+        android:id="@+id/widget_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/type_widget"
+        android:background="?android:selectableItemBackground"/>
+    <TextView
+        android:id="@+id/rx_java_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/type_rx_java"
+        android:background="?android:attr/selectableItemBackground"/>
+
+
 </LinearLayout>

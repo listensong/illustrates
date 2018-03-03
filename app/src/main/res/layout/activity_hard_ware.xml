@@ -24,4 +24,13 @@
         android:text="@string/type_hw_camera2"
         android:background="?android:selectableItemBackground"/>
 
+    <TextView
+        android:id="@+id/wlan_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/type_hw_wlan_direct"
+        android:background="?android:attr/selectableItemBackground"/>
+
 </LinearLayout>
