@@ -37,9 +37,12 @@ public class MixedAdapter extends RecyclerView.Adapter<MixedAdapter.ViewHolder> 
     private IOnItemClickListener mItemClickListener;
     private IOnItemLongClickListener mItemLongListener;
 
+    //private Animation mFirstInAnimation;
+
     public MixedAdapter(@NonNull Context context, @NonNull List<ItemData> list) {
         mContext = context.getApplicationContext();
         mList = list;
+        //mFirstInAnimation = AnimationUtils.loadAnimation(mContext, R.anim.list_item_first_in_anim);
     }
 
     public void setOnClickedListener(IOnItemClickListener itemListener) {
@@ -157,6 +160,11 @@ public class MixedAdapter extends RecyclerView.Adapter<MixedAdapter.ViewHolder> 
                 }
             });
 
+//            if (!mList.get(position).getUsed()) {
+//                mList.get(position).setUsed(true);
+//                holder.mItemView.startAnimation(mFirstInAnimation);
+//            }
+
             holder.mPosition = position;
 
             holder.mItemView.setTag(position);
@@ -190,7 +198,7 @@ public class MixedAdapter extends RecyclerView.Adapter<MixedAdapter.ViewHolder> 
         TextView mIndexTextView;
         TextView mTitleTextView;
         CheckBox mCheckBox;
-        int mPosition;
+        int mPosition = -1;
 
         public ViewHolder(View itemView) {
             super(itemView);
