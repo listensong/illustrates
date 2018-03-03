@@ -1,3 +1,11 @@
+# 舍弃舍弃，转为把所有小例子拆分为独立的demo  
+# 舍弃舍弃，转为把所有小例子拆分为独立的demo  
+# 舍弃舍弃，转为把所有小例子拆分为独立的demo  
+
+
+
+
+
 # illustrates
 ## illustrates主要是一个demo程序，在这里面实现各种常见功能的demo，比如recyclerview,camera等等功能的实现、具体用法。会使用java和kotlin进行编写，Kotlin请参考Kotlin-Illustrates。
 
